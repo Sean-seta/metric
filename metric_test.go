@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/go-resty/resty/v2"
 	"testing"
-	"time"
 )
 
 func TestCallAPI(t *testing.T) {
@@ -18,7 +17,6 @@ func TestCallAPI(t *testing.T) {
 				break
 			}
 		}
-		time.Sleep(5 * time.Second)
 	}()
 	go func() {
 		for {
@@ -28,17 +26,16 @@ func TestCallAPI(t *testing.T) {
 				break
 			}
 		}
-		time.Sleep(1 * time.Second)
 	}()
-	go func() {
-		for {
-			_, err := client.R().
-				Get("health")
-			if err != nil {
-				break
-			}
-		}
-	}()
+	//go func() {
+	//	for {
+	//		_, err := client.R().
+	//			Get("health")
+	//		if err != nil {
+	//			break
+	//		}
+	//	}
+	//}()
 	for {
 		_, err := client.R().
 			Get("health")

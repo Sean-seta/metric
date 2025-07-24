@@ -3,28 +3,40 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zsais/go-gin-prometheus"
+	"math/rand"
 	"time"
 )
+
+func genRandom() time.Duration {
+	rand.Seed(time.Now().UnixNano())
+
+	// Generate a random number between 1 and 5
+	randomNumber := rand.Intn(5) + 1 // 1 to 5
+
+	return time.Duration(randomNumber) * time.Second
+}
 
 func main() {
 	r := gin.New()
 
 	// NewWithConfig is the recommended way to initialize the middleware
 	p := ginprometheus.NewWithConfig(ginprometheus.Config{
-		Subsystem: "dat",
+		Subsystem: "gin",
 	})
 
 	p.Use(r)
 	r.GET("/", func(c *gin.Context) {
+		time.Sleep(genRandom())
 		c.JSON(200, "Hello world!")
 	})
 	r.GET("/ping", func(c *gin.Context) {
+		time.Sleep(genRandom())
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
 	r.GET("/health", func(c *gin.Context) {
-		time.Sleep(2 * time.Second)
+		time.Sleep(genRandom())
 		c.JSON(200, gin.H{
 			"status": "ok",
 		})
